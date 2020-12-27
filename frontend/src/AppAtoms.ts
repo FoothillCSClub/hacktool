@@ -15,14 +15,14 @@ const localStorageEffect = (key: string) => ({ setSelf, onSet }: any) => {
     });
 };
 
-const currentUserAuthToken: RecoilState<string> = atom({
+const currentUserAuthTokenState: RecoilState<string> = atom({
     key: 'CurrentUserAuthToken',
     default: '',
     effects_UNSTABLE: [
-        localStorageEffect('current_user_auth_token'),
+        localStorageEffect('do_not_share_current_user_auth_token'),
     ]
 });
 
 export {
-    currentUserAuthToken
+    currentUserAuthTokenState
 }

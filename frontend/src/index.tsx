@@ -7,6 +7,7 @@ import { grommet, Grommet } from 'grommet'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NotFound from './NotFound';
 import Dashboard from './Dashboard';
+import Authorization from './Authorization';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +20,9 @@ ReactDOM.render(
             </Route>
             <Route exact path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route exact path="/authorization-do-not-share">
+              <Authorization />
             </Route>
             <Route>
               <NotFound />
