@@ -2,13 +2,30 @@ import React from 'react';
 import { Avatar, Box, Button, Grid, Heading, Paragraph, Text } from 'grommet';
 import { useRecoilValue } from 'recoil';
 import { currentUserAuthTokenState } from './AppAtoms';
-import { Github, Login } from 'grommet-icons';
-import DebugSurface from './components/DebugSurface';
+import { Github } from 'grommet-icons';
 import { useQuery } from 'react-query';
 import { NetworkTypes, nullthrows } from '@hacktool/common'
 import { useHistory } from 'react-router-dom';
+import DebugUserToken from './components/DebugUserToken';
+import LoadingFallback from './components/LoadingFallback';
+import DebugNetworkError from './components/DebugNetworkError';
 
 const projects: NetworkTypes.Project[] = [] as NetworkTypes.Project[];
+
+function useDashboardQuery(userToken: string) {
+    return useQuery<NetworkTypes.User, Error>('userDashboard', async () => {
+        try {
+            const response = await (await fetch(`${process.env.REACT_APP_API_URL}/me`, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`
+                }
+            })).json()
+            return response;
+        } catch (error) {
+            throw new Error(error);
+        }
+    })
+}
 
 function Dashboard() {
 
@@ -19,47 +36,13 @@ function Dashboard() {
         history.push('/?type=NULLIFY');
     }
 
-    const { isLoading, isError, data } = useQuery<NetworkTypes.User>('userDashboard', () =>
-        fetch(`${process.env.REACT_APP_API_URL}/me`, {
-            headers: {
-                Authorization: `Bearer ${userToken}`
-            }
-        }).then(res =>
-            res.json()
-        )
-    )
+    const { isLoading, isError, data } = useDashboardQuery(userToken);
 
-    if (!userToken || userToken.length <= 0) {
-        return (
-            <DebugSurface>
-                <Box align="center" justify="center">
-                    <Heading color="status-error">Token Missing!</Heading>
-                    <Paragraph>
-                        Your account lacks a User token this is used to verify your identity
-                        and grant access to certain app features. You may want to go to the
-                        login page and try logging in or reaching out to the hacktool team
-                        about this issue.
-                </Paragraph>
-                    <Button color="status-error" primary href='/' icon={<Login />} label='Take me to the login page' />
-                </Box>
-            </DebugSurface>
-        );
-    }
+    if (!userToken || userToken.length <= 0) return <DebugUserToken />
 
-    if (isLoading) return <Box align="center" justify="center">
-        <Heading>Loading...</Heading>
-    </Box>
+    if (isLoading) return <LoadingFallback />
 
-    if (isError) return (
-        <DebugSurface>
-            <Box align="center" justify="center">
-                <Heading color="status-error">An Error Has Occured</Heading>
-                <Paragraph>Reach out to the hacktool team if this continues
-                after refresh or logging in again
-                </Paragraph>
-            </Box>
-        </DebugSurface>
-    )
+    if (isError) return <DebugNetworkError />
 
     return (
         <Box align="center" justify="center">

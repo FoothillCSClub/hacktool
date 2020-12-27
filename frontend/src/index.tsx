@@ -9,6 +9,7 @@ import NotFound from './NotFound';
 import Dashboard from './Dashboard';
 import Authorization from './Authorization';
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import Projects from './Projects';
 
 const queryClient = new QueryClient()
@@ -38,6 +39,7 @@ ReactDOM.render(
             </Switch>
           </BrowserRouter>
         </Grommet>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>,
