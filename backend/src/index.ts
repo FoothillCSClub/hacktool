@@ -6,8 +6,11 @@ import fetch from 'node-fetch'
 import jwt from 'jsonwebtoken'
 import helmet from 'helmet'
 import cors from 'cors'
+import bodyParser from 'body-parser';
 
 import { IUser, User } from './models'
+import { IFeedback, Feedback } from './models'
+import createFeedback from './validators/createFeedback'
 
 type GithubId = number;
 interface JWTPayloadType {
@@ -96,6 +99,7 @@ async function checkToken(req: express.Request, res: express.Response, next: exp
 
 app.use(helmet())
 app.use(cors())
+app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
   res.send('Hello world')
@@ -105,6 +109,17 @@ app.get('/me', checkToken, async (req, res) => {
   const { name, githubID, githubURL, avatarURL, skills } = req.context.user
 
   res.json({ name, githubID, githubURL, avatarURL, skills });
+})
+
+
+app.post('/debug-feedback', async (req, res) => {
+  try {
+    const value = await createFeedback.validateAsync(req.body);
+    await Feedback.create(value);
+    return res.status(201).send('Success!')
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 })
 
 app.get('/github/login', (req, res) => {
