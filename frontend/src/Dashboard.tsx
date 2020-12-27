@@ -7,22 +7,6 @@ import DebugSurface from './components/DebugSurface';
 import { useQuery } from 'react-query';
 import { NetworkTypes, nullthrows } from '@hacktool/common'
 
-// xport type User = Readonly<{
-//     name: string;
-//     githubURL: string;
-//     avatarURL: string;
-//     skills: ReadonlyArray<Skill>;
-// }>
-
-// export type Project = Readonly<{
-//     title: string;
-//     description: string;
-//     projectURL: string;
-//     leader: User;
-//     skills: ReadonlyArray<Skill>;
-//     members: ReadonlyArray<User>;
-// }>
-
 const projects: NetworkTypes.Project[] = [] as NetworkTypes.Project[];
 
 function Dashboard() {
