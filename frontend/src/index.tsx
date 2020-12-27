@@ -6,6 +6,7 @@ import { RecoilRoot } from 'recoil'
 import { grommet, Grommet } from 'grommet'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NotFound from './NotFound';
+import Dashboard from './Dashboard';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,6 +16,9 @@ ReactDOM.render(
           <Switch>
             <Route exact path="/">
               <App />
+            </Route>
+            <Route exact path="/dashboard">
+              <Dashboard />
             </Route>
             <Route>
               <NotFound />
