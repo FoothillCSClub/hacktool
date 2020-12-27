@@ -8,28 +8,33 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NotFound from './NotFound';
 import Dashboard from './Dashboard';
 import Authorization from './Authorization';
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <Grommet theme={grommet}>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/">
-              <App />
-            </Route>
-            <Route exact path="/dashboard">
-              <Dashboard />
-            </Route>
-            <Route exact path="/authorization-do-not-share">
-              <Authorization />
-            </Route>
-            <Route>
-              <NotFound />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </Grommet>
+      <QueryClientProvider client={queryClient}>
+        <Grommet theme={grommet}>
+          <BrowserRouter>
+            <Switch>
+              <Route exact path="/">
+                <App />
+              </Route>
+              <Route exact path="/dashboard">
+                <Dashboard />
+              </Route>
+              <Route exact path="/authorization-do-not-share">
+                <Authorization />
+              </Route>
+              <Route>
+                <NotFound />
+              </Route>
+            </Switch>
+          </BrowserRouter>
+        </Grommet>
+      </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
