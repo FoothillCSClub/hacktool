@@ -1,15 +1,17 @@
-export type Team = Readonly<{
-    authorName: string;
-    authorGithubHTML: string;
-    authorAvatarURL: string;
-    description: string;
-    skills: ReadonlyArray<string>
-    team: ReadonlyArray<{
-        name: string;
-        githubHTML: string;
-        avatarURL: string;
-        skills: ReadonlyArray<string>
-    }>
+const skillCollection = ["javascript", "typescript", 'python'] as const;
+type Skill = typeof skillCollection[number]; // 'a'|'b'|'c';
+
+export type User = Readonly<{
+    name: string
+    githubHTML: string
+    avatarURL: string
+    skills: ReadonlyArray<Skill>
 }>
 
-export type TeamCollection = ReadonlyArray<Team>;
+export type Project = Readonly<{
+    title: string;
+    description: string;
+    leader: User;
+    projectURL: string;
+    members: ReadonlyArray<User>;
+}>
