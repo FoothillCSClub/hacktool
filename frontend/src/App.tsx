@@ -1,20 +1,27 @@
 import React, { useCallback, useEffect } from 'react';
 import { Box, Button, Heading } from 'grommet';
 import { Github } from 'grommet-icons';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { currentUserAuthTokenState } from './AppAtoms';
 import { useHistory } from 'react-router-dom';
+import useURLQuery from './util/useURLQuery';
 
 function App() {
 
-  const currentToken = useRecoilValue(currentUserAuthTokenState);
+  const [currentToken, setCurrentToken] = useRecoilState(currentUserAuthTokenState);
   const history = useHistory();
+  const query = useURLQuery();
+  const queryType = query.get('type');
 
   const checkForToken = useCallback(() => {
+    if (queryType === 'NULLIFY') {
+      setCurrentToken('');
+      return
+    }
     if (currentToken && currentToken.length >= 1) {
       history.push('/dashboard');
     }
-  }, [currentToken, history])
+  }, [currentToken, history, queryType, setCurrentToken])
 
   useEffect(() => {
     checkForToken();

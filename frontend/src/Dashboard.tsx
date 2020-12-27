@@ -6,13 +6,18 @@ import { Github, Login } from 'grommet-icons';
 import DebugSurface from './components/DebugSurface';
 import { useQuery } from 'react-query';
 import { NetworkTypes, nullthrows } from '@hacktool/common'
+import { useHistory } from 'react-router-dom';
 
 const projects: NetworkTypes.Project[] = [] as NetworkTypes.Project[];
 
 function Dashboard() {
 
     const userToken = useRecoilValue(currentUserAuthTokenState);
+    const history = useHistory();
 
+    function handleLogout() {
+        history.push('/?type=NULLIFY');
+    }
 
     const { isLoading, isError, data } = useQuery<NetworkTypes.User>('userDashboard', () =>
         fetch(`${process.env.REACT_APP_API_URL}/me`, {
@@ -22,21 +27,6 @@ function Dashboard() {
         }).then(res =>
             res.json()
         )
-    )
-
-    if (isLoading) return <Box align="center" justify="center">
-        <Heading>Loading...</Heading>
-    </Box>
-
-    if (isError) return (
-        <DebugSurface>
-            <Box align="center" justify="center">
-                <Heading color="status-error">An Error Has Occured</Heading>
-                <Paragraph>Reach out to the hacktool team if this continues
-                after refresh or logging in again
-                </Paragraph>
-            </Box>
-        </DebugSurface>
     )
 
     if (!userToken || userToken.length <= 0) {
@@ -56,10 +46,28 @@ function Dashboard() {
         );
     }
 
+    if (isLoading) return <Box align="center" justify="center">
+        <Heading>Loading...</Heading>
+    </Box>
+
+    if (isError) return (
+        <DebugSurface>
+            <Box align="center" justify="center">
+                <Heading color="status-error">An Error Has Occured</Heading>
+                <Paragraph>Reach out to the hacktool team if this continues
+                after refresh or logging in again
+                </Paragraph>
+            </Box>
+        </DebugSurface>
+    )
+
     return (
         <Box align="center" justify="center">
             <Heading>Welcome to the Hack Tool Dashboard!</Heading>
-            <Button href='/projects' label='Look at other projects' />
+            <Box direction="row" gap="xsmall">
+                <Button primary href='/projects' label='Look at other projects' />
+                <Button onClick={handleLogout} label='Logout' />
+            </Box>
             <Grid>
                 <Grid
                     rows={['auto', 'auto']}
