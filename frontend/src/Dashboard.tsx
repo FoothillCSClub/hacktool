@@ -59,6 +59,7 @@ function Dashboard() {
     return (
         <Box align="center" justify="center">
             <Heading>Welcome to the Hack Tool Dashboard!</Heading>
+            <Button href='/projects' label='Look at other projects' />
             <Grid>
                 <Grid
                     rows={['auto', 'auto']}

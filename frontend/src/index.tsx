@@ -9,6 +9,7 @@ import NotFound from './NotFound';
 import Dashboard from './Dashboard';
 import Authorization from './Authorization';
 import { QueryClient, QueryClientProvider } from 'react-query'
+import Projects from './Projects';
 
 const queryClient = new QueryClient()
 
@@ -24,6 +25,9 @@ ReactDOM.render(
               </Route>
               <Route exact path="/dashboard">
                 <Dashboard />
+              </Route>
+              <Route exact path="/projects">
+                <Projects />
               </Route>
               <Route exact path="/authorization-do-not-share">
                 <Authorization />
