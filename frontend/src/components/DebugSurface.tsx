@@ -2,6 +2,8 @@ import { Box, Button, Heading, Paragraph, TextArea, Text } from 'grommet'
 import React, { useState } from 'react'
 import { Bug, Close } from 'grommet-icons';
 
+import { generateAPIURI } from '@hacktool/common'
+
 type Props = Readonly<{
     children: React.ReactNode;
 }>
@@ -18,7 +20,7 @@ function DebugFormModal({ setShowDebugModal }: DebugFormModalProps) {
 
 
     async function submissionHandler() {
-        fetch(`${process.env.REACT_APP_API_URL}/debug-feedback`, {
+        fetch(generateAPIURI('/debug-feedback'), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

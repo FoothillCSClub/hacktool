@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { currentUserAuthTokenState } from './AppAtoms';
 import { useHistory } from 'react-router-dom';
 import useURLQuery from './util/useURLQuery';
+import { generateAPIURI } from '@hacktool/common';
 
 function App() {
 
@@ -27,14 +28,10 @@ function App() {
     checkForToken();
   }, [checkForToken])
 
-  function githubLoginHandler() {
-    window.location.replace(`${process.env.REACT_APP_API_URL}/github/login`)
-  }
-
   return (
     <Box align="center" justify="center">
       <Heading>Welcome to the Hack Tool!</Heading>
-      <Button onClick={githubLoginHandler} primary label="Continue with Github" icon={<Github />} />
+      <Button href={generateAPIURI('/github/login')} primary label="Continue with Github" icon={<Github />} />
     </Box>
   );
 }

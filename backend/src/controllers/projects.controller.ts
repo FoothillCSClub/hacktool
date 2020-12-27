@@ -31,7 +31,6 @@ router.get('/', async (req: Request, res: Response) => {
     }
 })
 
-// /project/my-projects
 router.get('/my-projects', extractToken, async (req: Request, res: Response) => {
     try {
         const projects = await Project.find({ members: req.context.user._id }).exec();
