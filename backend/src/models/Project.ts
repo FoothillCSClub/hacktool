@@ -17,6 +17,9 @@ const ProjectSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  leaderID: {
+    type: Schema.Types.ObjectId,
+  },
   skills: {
     type: [String],
     required: true

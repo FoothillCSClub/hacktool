@@ -104,7 +104,7 @@ type ProjectsQueryResponse = Readonly<{
 function useProjectsQuery(userToken: string) {
     return useQuery<ProjectsQueryResponse, Error>('projectsPage', async () => {
         try {
-            const response = await axios.get(generateAPIURI('/me/dashboard'), {
+            const response = await axios.get(generateAPIURI('/project'), {
                 headers: {
                     'Authorization': `Bearer ${userToken}`
                 }
@@ -139,25 +139,26 @@ function Projects() {
                 </Box>)}
 
             <Box overflow='auto' width="large" height="100%" pad="small" gridArea="main" background="light-2" align="center" justify="start">
-                {(!data?.projects || data.projects.length <= 0) ? <Heading size="small">No Projects</Heading> : (<> {data.projects.map((project, index) => (
-                    <Box key={index.toString()} fill="horizontal" margin={{ bottom: "small" }} background="white" border pad="small">
-                        <Avatar border={{
-                            color: '#FFCA58'
-                        }} onClick={() => window.open(project.leader.githubURL, '_blank')
-                        } src={project.leader.avatarURL} size="65px" />
-                        <Heading margin={{
-                            bottom: "small",
-                            top: "small"
-                        }}>{project.title}</Heading>
-                        <Box direction="row" gap="xxsmall" alignSelf="start">
-                            {project.members.map((member, index) => <Avatar key={index.toString()} onClick={() => window.open(member.githubURL, '_blank')
-                            } src={member.avatarURL} size="35px" />)}
+                {(!data?.projects || data.projects.length <= 0) ? <Heading size="small">No Projects</Heading> : (<>
+                    {data.projects.map((project, index) => (
+                        <Box key={index.toString()} fill="horizontal" margin={{ bottom: "small" }} background="white" border pad="small">
+                            <Avatar border={{
+                                color: '#FFCA58'
+                            }} onClick={() => window.open(project.leader.githubURL, '_blank')
+                            } src={project.leader.avatarURL} size="65px" />
+                            <Heading margin={{
+                                bottom: "small",
+                                top: "small"
+                            }}>{project.title}</Heading>
+                            <Box direction="row" gap="xxsmall" alignSelf="start">
+                                {project.members.map((member, index) => <Avatar key={index.toString()} onClick={() => window.open(member.githubURL, '_blank')
+                                } src={member.avatarURL} size="35px" />)}
+                            </Box>
+                            {(project.skills && project.skills.length > 1) ? <Box direction="row-responsive" wrap>{project.skills.map((skill, index) => <Text key={index.toString()} size="large" color="gray">{skill},</Text>)}</Box> : <Text size="large" color="gray">No Desired Skills Listed</Text>}
+                            <Paragraph fill margin={{ bottom: "small" }}>{project.description}</Paragraph>
+                            {project.projectURL ? <Button icon={<Github />} target="__blank" color="#211F1F" primary label="Check Out Project" href={project.projectURL} /> : <Button disabled primary color="gray" label='No Project Repo Yet' />}
                         </Box>
-                        {(project.skills && project.skills.length > 1) ? <Box direction="row-responsive" wrap>{project.skills.map((skill, index) => <Text key={index.toString()} size="large" color="gray">{skill},</Text>)}</Box> : <Text size="large" color="gray">No Desired Skills Listed</Text>}
-                        <Paragraph fill margin={{ bottom: "small" }}>{project.description}</Paragraph>
-                        {project.projectURL ? <Button icon={<Github />} target="__blank" color="#211F1F" primary label="Check Out Project" href={project.projectURL} /> : <Button disabled primary color="gray" label='No Project Repo Yet' />}
-                    </Box>
-                ))}</>)}
+                    ))}</>)}
             </Box>
 
         </Box>
