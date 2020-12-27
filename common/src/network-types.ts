@@ -1,5 +1,7 @@
+import { LiteralUnion } from './util-types';
+
 export const skillCollection = ['javascript', 'typescript', 'python'] as const;
-export type Skill = typeof skillCollection[number];
+export type Skill = LiteralUnion<typeof skillCollection[number]>;
 
 export type User = Readonly<{
     name: string;

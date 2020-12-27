@@ -10,6 +10,12 @@ router.post('/', extractToken, async (req: Request, res: Response) => {
         const userID = req.context.user._id;
         const value = await createProject.validateAsync(req.body);
 
+        if (req.body.projectURL) {
+            const working = String(req.body.projectURL);
+            const isGithubOrigin = working.startsWith("https://github.com");
+            if (!isGithubOrigin) throw new Error('Project URL is not from Github')
+        }
+
         const newProject = await Project.create({
             leader: userID,
             members: [userID],
