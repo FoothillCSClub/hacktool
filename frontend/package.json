@@ -1,5 +1,5 @@
 {
-  "name": "hacktool-frontend",
+  "name": "@hacktool/frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

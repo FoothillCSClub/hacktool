@@ -1,15 +1,14 @@
 {
-  "name": "hacktool-backend",
+  "name": "@hacktool/backend",
   "version": "0.1.0",
   "description": "Hacktool project backend",
   "main": "index.js",
   "scripts": {
     "build": "tsc -p .",
-    "start": "yarn build && node dist/index.js",
-    "dev": "ts-node-dev src/index.ts",
+    "prod": "yarn build && node dist/index.js",
+    "start": "ts-node-dev src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
   "license": "MIT",
   "devDependencies": {
     "@types/express": "^4.17.9",
@@ -20,6 +19,7 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
+    "@hacktool/common": "*",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",

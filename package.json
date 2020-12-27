@@ -1,0 +1,22 @@
+{
+  "name": "@hacktool/core",
+  "version": "0.1.0",
+  "description": "Hacktool monorepo",
+  "repository": "https://github.com/FoothillCSClub/hacktool",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "common",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "build:common": "yarn workspace @hacktool/common build",
+    "start": "yarn build:common && concurrently -n backend,frontend \"yarn:start:backend\" \"yarn:start:frontend\"",
+    "start:frontend": "yarn workspace @hacktool/frontend start",
+    "start:backend": "yarn workspace @hacktool/backend start"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
