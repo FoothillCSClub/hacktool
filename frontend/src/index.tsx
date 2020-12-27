@@ -1,12 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { RecoilRoot } from 'recoil'
+import { grommet, Grommet } from 'grommet'
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import NotFound from './NotFound';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <Grommet theme={grommet}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/">
+              <App />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </Grommet>
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
 );
