@@ -11,8 +11,8 @@ export type User = Readonly<{
 export type Project = Readonly<{
     title: string;
     description: string;
-    leader: User;
     projectURL: string;
+    leader: User;
     skills: ReadonlyArray<Skill>;
     members: ReadonlyArray<User>;
 }>
