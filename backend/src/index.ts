@@ -11,6 +11,10 @@ app.get('/', (req, res) => {
   res.send('Hello world')
 })
 
+app.get('/github/login', (req, res) => {
+  res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.GH_CLIENT_ID}`)
+})
+
 app.get('/github/callback', async (req, res) => {
   try {
     const response = await fetch('https://github.com/login/oauth/access_token', {
@@ -35,7 +39,7 @@ app.get('/github/callback', async (req, res) => {
         Authorization: `token ${token}`
       }
     })
-    const userData = await userResponse.json();
+    const userData = await userResponse.json()
 
     res.redirect(`${process.env.WEB_CLIENT_URL}/authorization-do-not-share/?token_do_not_share=${token}`)
   } catch (err) {

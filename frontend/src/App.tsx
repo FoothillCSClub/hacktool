@@ -4,7 +4,7 @@ import { Github } from 'grommet-icons';
 
 function App() {
   function githubLoginHandler() {
-    window.location.replace(`https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GH_CLIENT_ID}`)
+    window.location.replace(`${process.env.REACT_APP_API_URL}/github/login`)
   }
 
   return (
