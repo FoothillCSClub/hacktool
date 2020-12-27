@@ -37,7 +37,7 @@ app.get('/github/callback', async (req, res) => {
     })
     const userData = await userResponse.json();
 
-    res.json(userData)
+    res.redirect(`${process.env.WEB_CLIENT_URL}/authorization-do-not-share/?token_do_not_share=${token}`)
   } catch (err) {
     res.status(500)
     res.json('We hit an error')
