@@ -6,22 +6,15 @@ const ProjectSchema = new Schema({
     type: String,
     required: true
   },
-  githubID: {
-    type: Number,
-    required: true,
-    unique: true
-  },
   description: {
     type: String,
     required: true
   },
   projectURL: {
     type: String,
-    required: true
   },
   leader: {
     type: { type: Schema.Types.ObjectId, ref: 'User' },
-    required: true
   },
   skills: {
     type: [String],
@@ -29,7 +22,6 @@ const ProjectSchema = new Schema({
   },
   members: {
     type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    required: true,
     default: []
   }
 }, { timestamps: true });

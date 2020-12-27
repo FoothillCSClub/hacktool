@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
 
 import { nullthrows } from '@hacktool/common';
@@ -15,8 +15,10 @@ function Authorization() {
 
     const history = useHistory();
 
-    setCurrentToken(tokenDoNotShare)
-    history.push('/dashboard')
+    useEffect(() => {
+        setCurrentToken(tokenDoNotShare)
+        history.push('/dashboard')
+    }, [history, setCurrentToken, tokenDoNotShare])
 
     return (
         <Box>
