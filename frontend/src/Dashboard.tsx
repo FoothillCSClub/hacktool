@@ -4,23 +4,27 @@ import { useRecoilValue } from 'recoil';
 import { currentUserAuthTokenState } from './AppAtoms';
 import { Github } from 'grommet-icons';
 import { useQuery } from 'react-query';
-import { NetworkTypes, nullthrows } from '@hacktool/common'
+import { generateAPIURI, NetworkTypes } from '@hacktool/common'
 import { useHistory } from 'react-router-dom';
 import DebugUserToken from './components/DebugUserToken';
 import LoadingFallback from './components/LoadingFallback';
 import DebugNetworkError from './components/DebugNetworkError';
+import axios from 'axios';
 
-const projects: NetworkTypes.Project[] = [] as NetworkTypes.Project[];
+type DashboardQueryResponse = Readonly<{
+    user: NetworkTypes.User,
+    projects: NetworkTypes.Project[]
+}>
 
 function useDashboardQuery(userToken: string) {
-    return useQuery<NetworkTypes.User, Error>('userDashboard', async () => {
+    return useQuery<DashboardQueryResponse, Error>('userDashboard', async () => {
         try {
-            const response = await (await fetch(`${process.env.REACT_APP_API_URL}/me`, {
+            const response = await axios.get(generateAPIURI('/me/dashboard'), {
                 headers: {
-                    Authorization: `Bearer ${userToken}`
+                    'Authorization': `Bearer ${userToken}`
                 }
-            })).json()
-            return response;
+            });
+            return response.data;
         } catch (error) {
             throw new Error(error);
         }
@@ -46,6 +50,7 @@ function Dashboard() {
 
     return (
         <Box align="center" justify="center">
+
             <Heading>Welcome to the Hack Tool Dashboard!</Heading>
             <Box direction="row" gap="xsmall">
                 <Button primary href='/projects' label='Look at other projects' />
@@ -62,14 +67,17 @@ function Dashboard() {
                     ]}
                 >
                     <Box width="medium" height="large" pad="small" background="light-5" gridArea="user" align="center" justify="start">
-                        <Heading>{data?.name}</Heading>
-                        <Avatar src={data?.avatarURL} size="200px" />
-                        <Button color="black" margin="small" label="Github" icon={<Github />} href={data?.githubURL} />
-                        {(nullthrows(data?.skills.length) > 1) ? <Box direction="row-responsive" wrap>{data?.skills.map((skill, index) => <Text key={index.toString()} size="large" color="gray">{skill},</Text>)}</Box> : <Text size="large" color="gray">No Skills Listed</Text>}
+                        <Heading>{data?.user?.name}</Heading>
+                        <Avatar src={data?.user?.avatarURL} size="200px" />
+                        <Button color="black" margin="small" label="Github" icon={<Github />} href={data?.user?.githubURL} />
+
+                        {(data?.user?.skills && data.user?.skills.length > 1)
+                            ? <Box direction="row-responsive" wrap>{data.user?.skills.map((skill, index) => <Text key={index.toString()} size="large" color="gray">{skill},</Text>)}</Box>
+                            : <Text size="large" color="gray">No Skills Listed</Text>}
                     </Box>
 
                     <Box overflow='auto' width="large" height="100%" pad="small" gridArea="main" background="light-2" align="center" justify="start">
-                        {(projects.length <= 0) ? <Heading size="small">No Projects</Heading> : (<> {projects.map((project, index) => (
+                        {(!data?.projects || data.projects.length <= 0) ? <Heading size="small">No Projects</Heading> : (<> {data.projects.map((project, index) => (
                             <Box key={index.toString()} fill="horizontal" margin={{ bottom: "small" }} background="white" border pad="small">
                                 <Avatar border={{
                                     color: '#FFCA58'
@@ -83,7 +91,7 @@ function Dashboard() {
                                     {project.members.map((member, index) => <Avatar key={index.toString()} onClick={() => window.open(member.githubURL, '_blank')
                                     } src={member.avatarURL} size="35px" />)}
                                 </Box>
-                                {(nullthrows(project.skills.length) > 1) ? <Box direction="row-responsive" wrap>{project.skills.map((skill, index) => <Text key={index.toString()} size="large" color="gray">{skill},</Text>)}</Box> : <Text size="large" color="gray">No Desired Skills Listed</Text>}
+                                {(project.skills && project.skills.length > 1) ? <Box direction="row-responsive" wrap>{project.skills.map((skill, index) => <Text key={index.toString()} size="large" color="gray">{skill},</Text>)}</Box> : <Text size="large" color="gray">No Desired Skills Listed</Text>}
                                 <Paragraph fill margin={{ bottom: "small" }}>{project.description}</Paragraph>
                                 {project.projectURL ? <Button icon={<Github />} target="__blank" color="#211F1F" primary label="Check Out Project" href={project.projectURL} /> : <Button disabled primary color="gray" label='No Project Repo Yet' />}
                             </Box>

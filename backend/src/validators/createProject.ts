@@ -6,11 +6,8 @@ const createProject = Joi.object({
     description: Joi.string()
         .required(),
     projectURL: Joi.string(),
-    leader: Joi.string(),
     skills: Joi.array()
         .items(Joi.string()),
-    members: Joi.array()
-        .items(Joi.string())
 })
 
 export default createProject;
