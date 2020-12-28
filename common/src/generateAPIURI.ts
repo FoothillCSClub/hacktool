@@ -1,7 +1,14 @@
 import config from './config';
 import { LiteralUnion } from './util-types'
 
-type TargetPath = LiteralUnion<'/me/dashboard' | '/debug-feedback' | '/project' | '/github/login' | '/github/callback' | '/me'>
+type TargetPath = LiteralUnion<
+    '/project/withUser' |
+    '/me/dashboard' |
+    '/debug-feedback' |
+    '/project' |
+    '/github/login'
+    | '/github/callback'
+    | '/me'>
 
 type GeneratedAPIURI = Readonly<string>
 

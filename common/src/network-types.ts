@@ -14,6 +14,7 @@ export type User = Readonly<{
 }>
 
 export type Project = Readonly<{
+    _id: MongoID;
     title: string;
     description: string;
     projectURL: string;
